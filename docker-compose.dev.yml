@@ -24,5 +24,3 @@ services:
       LOG_LEVEL: "debug"
     ports:
       - "8888:80"
-    volumes:
-      - /home/michael/rpio/projects/PUB-entity-resolution/repos/entity-mapping-service:/app
