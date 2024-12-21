@@ -11,13 +11,14 @@ services:
     environment:
       ENABLE_ENDPOINT_SELECTOR: "true"
       DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
-  spex:
-    image: spex
-    ports:
-      - "8892:80"
-    environment:
-      ENABLE_ENDPOINT_SELECTOR: "true"
-      DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
+  # spex:
+  #   # Needs some more build instructions
+  #   image: spex
+  #   ports:
+  #     - "8892:80"
+  #   environment:
+  #     ENABLE_ENDPOINT_SELECTOR: "true"
+  #     DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
   entity-mapping:
     environment:
       MODE: "development"
