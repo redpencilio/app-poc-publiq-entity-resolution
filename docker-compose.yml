@@ -21,7 +21,3 @@ services:
       WORKERS: "1"
       MU_SPARQL_ENDPOINT: "http://virtuoso:8890/sparql"
       MU_SPARQL_UPDATEPOINT: "http://virtuoso:8890/sparql"
-    ports:
-      - "8888:80"
-    volumes:
-      - /home/michael/rpio/projects/PUB-entity-resolution/repos/entity-mapping-service:/app
