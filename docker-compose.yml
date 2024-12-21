@@ -1,0 +1,27 @@
+services:
+  virtuoso:
+    image: redpencil/virtuoso:1.3.0-rc.1
+    environment:
+      SPARQL_UPDATE: "true"
+      DEFAULT_GRAPH: "http://mu.semte.ch/application"
+    volumes:
+      - ./data/db:/data
+      - ./config/virtuoso/virtuoso.ini:/data/virtuoso.ini
+      - ./config/virtuoso/toLoad:/data/toLoad
+  # migrations:
+  #   # Publiq data loaded through Virtuoso toLoad because of its size
+  #   image: semtech/mu-migrations-service:0.9.0
+  #   environment:
+  #     MU_SPARQL_ENDPOINT: "http://virtuoso:8890/sparql"
+  #   volumes:
+  #     - ./config/migrations:/data/migrations
+  entity-mapping:
+    build: /home/michael/rpio/projects/PUB-entity-resolution/repos/entity-mapping-service
+    environment:
+      WORKERS: "1"
+      MU_SPARQL_ENDPOINT: "http://virtuoso:8890/sparql"
+      MU_SPARQL_UPDATEPOINT: "http://virtuoso:8890/sparql"
+    ports:
+      - "8888:80"
+    volumes:
+      - /home/michael/rpio/projects/PUB-entity-resolution/repos/entity-mapping-service:/app
