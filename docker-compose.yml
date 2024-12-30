@@ -16,7 +16,7 @@ services:
     volumes:
       - ./config/migrations:/data/migrations
   entity-mapping:
-    build: /home/michael/rpio/projects/PUB-entity-resolution/repos/entity-mapping-service
+    image: redpencil/publiq-entity-mapping-service:latest
     environment:
       WORKERS: "1"
       MU_SPARQL_ENDPOINT: "http://virtuoso:8890/sparql"
