@@ -1,0 +1,44 @@
+PREFIX :    <http://example.com/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+# From https://stackoverflow.com/a/47532851
+
+###################
+# Rewrite objects #
+###################
+
+DELETE {
+    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+        ?s ?p ?bnode .
+    }
+}
+INSERT {
+    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+        ?s ?p ?iri .
+    }
+}
+WHERE {
+  {
+    SELECT ?bnode ?iri
+    WHERE {
+      {
+        SELECT DISTINCT ?bnode
+        FROM <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be>
+        WHERE {
+          [] ?p ?bnode .
+          FILTER isBlank(?bnode)
+        }
+        LIMIT 100000
+      }
+      OPTIONAL {
+        GRAPH :aliases {
+          ?bnode owl:sameAs ?_iri .
+        }
+      }
+      BIND (coalesce(?_iri, uuid()) AS ?iri)
+    }
+  }
+    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+        ?s ?p ?bnode .
+    }
+}
