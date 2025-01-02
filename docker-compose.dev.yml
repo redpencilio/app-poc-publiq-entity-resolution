@@ -10,7 +10,9 @@ services:
   database:
     restart: "no"
   migrations:
-    restart: "no"  
+    restart: "no"
+    volumes:
+      - ./config/dev-migrations:/data/migrations/dev
   yasgui:
     image: erikap/yasgui
     ports:
@@ -36,11 +38,17 @@ services:
       - "8888:80"
     restart: "no"
   identifier:
+    ports:
+      - "80:80"
     restart: "no"
   dispatcher:
     restart: "no"
   cache:
     restart: "no"
   resource:
+    restart: "no"
+  login:
+    restart: "no"
+  registration:
     restart: "no"
 

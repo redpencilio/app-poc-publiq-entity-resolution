@@ -79,3 +79,23 @@ services:
     labels:
       - "logging=true"
     restart: always
+  login:
+    image: semtech/mu-login-service:3.0.0
+    environment:
+      USERS_GRAPH: "http://mu.semte.ch/graphs/users"
+      SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
+    links:
+      - database:database
+    labels:
+      - "logging=true"
+    restart: always
+  registration:
+    image: semtech/mu-registration-service:2.7.3
+    environment:
+      USERS_GRAPH: "http://mu.semte.ch/graphs/users"
+      SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
+    links:
+      - database:database
+    restart: always
+    labels:
+      - "logging=true"

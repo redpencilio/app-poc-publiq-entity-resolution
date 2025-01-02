@@ -1,4 +1,4 @@
-efmodule Dispatcher do
+defmodule Dispatcher do
   use Matcher
   define_accept_types [
     html: [ "text/html", "application/xhtml+html" ],
@@ -29,6 +29,9 @@ efmodule Dispatcher do
     Proxy.forward conn, [], "http://frontend/index.html"
   end
 
+  match "/sessions/*path", @any do
+    Proxy.forward conn, path, "http://login/sessions/"
+  end
 
   match "/*_", %{ layer: :not_found } do
     send_resp( conn, 404, "Route not found.  See config/dispatcher.ex" )
