@@ -29,6 +29,22 @@ defmodule Dispatcher do
     Proxy.forward conn, [], "http://frontend/index.html"
   end
 
+  #################
+  # SERVICES
+  #################
+
+  match "/mappings/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://cache/accounts/"
+  end
+
+  match "/addresses/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://cache/addresses/"
+  end
+
+  match "/locations/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://cache/locations/"
+  end
+
   match "/sessions/*path", @any do
     Proxy.forward conn, path, "http://login/sessions/"
   end
