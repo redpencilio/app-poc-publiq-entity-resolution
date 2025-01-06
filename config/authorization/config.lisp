@@ -9,7 +9,7 @@
 ;;; configuration
 (in-package :client)
 (setf *log-sparql-query-roundtrip* t)
-(setf *backend* "http://triplestore:8890/sparql")
+(setf *backend* "http://virtuoso:8890/sparql")
 
 (in-package :server)
 (setf *log-incoming-requests-p* nil)

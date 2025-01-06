@@ -1,16 +1,33 @@
 services:
+  identifier:
+    restart: "no"
+  dispatcher:
+    restart: "no"
   frontend:
     restart: "no"
-  virtuoso:
+  resource:
+    restart: "no"
+  cache:
+    restart: "no"
+  database:
+    restart: "no"
+  triplestore:
     environment:
       ENABLE_CORS: "true"
     ports:
       - 8890:8890
     restart: "no"
-  database:
+  deltanotifier:
     restart: "no"
   migrations:
-    restart: "no"  
+    restart: "no"
+  entity-mapping:
+    environment:
+      MODE: "development"
+      LOG_LEVEL: "debug"
+    ports:
+      - "8888:80"
+    restart: "no"
   yasgui:
     image: erikap/yasgui
     ports:
@@ -28,19 +45,6 @@ services:
   #     ENABLE_ENDPOINT_SELECTOR: "true"
   #     DEFAULT_SPARQL_ENDPOINT: "http://localhost:8890/sparql"
   #     restart: "no"
-  entity-mapping:
-    environment:
-      MODE: "development"
-      LOG_LEVEL: "debug"
-    ports:
-      - "8888:80"
-    restart: "no"
-  identifier:
-    restart: "no"
-  dispatcher:
-    restart: "no"
-  cache:
-    restart: "no"
-  resource:
-    restart: "no"
+
+
 
