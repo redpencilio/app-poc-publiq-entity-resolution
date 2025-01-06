@@ -22,7 +22,7 @@ services:
   migrations:
     restart: "no"
     volumes:
-      - ./config/dev-migrations:/data/migrations/dev
+      - ./config/development/migrations:/data/migrations/dev
   login:
     restart: "no"
   registration:
