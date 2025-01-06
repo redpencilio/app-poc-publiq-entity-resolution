@@ -28,6 +28,7 @@ WHERE {
           [] ?p ?bnode .
           FILTER isBlank(?bnode)
         }
+        ORDER BY ?bnode
         LIMIT 100000
       }
       OPTIONAL {
