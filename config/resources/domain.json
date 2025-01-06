@@ -46,6 +46,10 @@
         "object": {
           "type": "url",
           "predicate": "sssom:object_id"
+        },
+        "predicate": {
+          "type": "url",
+          "predicate": "sssom:predicate_id"
         }
       },
       "relationships": {},
