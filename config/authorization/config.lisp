@@ -1,9 +1,9 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;; delta messenger
-; (in-package :delta-messenger)
+(in-package :delta-messenger)
 
-; (add-delta-logger)
-; (add-delta-messenger "http://delta-notifier/")
+(add-delta-logger)
+(add-delta-messenger "http://delta-notifier/")
 
 ;;;;;;;;;;;;;;;;;
 ;;; configuration
@@ -42,7 +42,7 @@
 
 (supply-allowed-group "public")
 
-(grant (read write)
+(grant (read)
   :to-graph (ticketgang-locaties 
              kunstenpunt-locaties
              cultuurparticipatie-metadata 
