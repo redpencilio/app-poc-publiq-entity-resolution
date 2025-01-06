@@ -1,6 +1,8 @@
 PREFIX :    <http://example.com/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
+# From https://stackoverflow.com/a/47532851
+
 ###################
 # Rewrite objects #
 ###################

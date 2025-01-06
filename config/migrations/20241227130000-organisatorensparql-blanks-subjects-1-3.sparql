@@ -8,12 +8,12 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 ####################
 
 DELETE {
-    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+    GRAPH <http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be> {
         ?bnode ?p ?o .
     }
 }
 INSERT {
-    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+    GRAPH <http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be> {
         ?iri ?p ?o .
     }
   GRAPH :aliases {
@@ -26,7 +26,7 @@ WHERE {
     WHERE {
       {
         SELECT DISTINCT ?bnode
-        FROM <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be>
+        FROM <http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be>
         WHERE {
           ?bnode ?p [] .
           FILTER isBlank(?bnode)
@@ -35,7 +35,7 @@ WHERE {
       }
     }
   }
-    GRAPH <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be> {
+    GRAPH <http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be> {
         ?bnode ?p ?o .
     }
 }
