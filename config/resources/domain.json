@@ -39,11 +39,11 @@
           "type": "float",
           "predicate": "sssom:similarity_score"
         },
-        "subject-uri": {
+        "subject": {
           "type": "url",
           "predicate": "sssom:subject_id"
         },
-        "object-uri": {
+        "object": {
           "type": "url",
           "predicate": "sssom:object_id"
         }
@@ -66,7 +66,7 @@
           "type": "date",
           "predicate": "dct:modified"
         },
-        "full-address": {
+        "address": {
           "type": "language-string",
           "predicate": "locn:fullAddress"
         },
@@ -74,19 +74,19 @@
           "type": "string",
           "predicate": "locn:postCode"
         },
-        "postname": {
+        "city": {
           "type": "language-string",
           "predicate": "locn:postName"
         },
-        "thoroughfare": {
+        "street": {
           "type": "language-string",
           "predicate": "locn:thoroughfare"
         },
-        "locator-designator": {
+        "number": {
           "type": "string",
           "predicate": "locn:locatorDesignator"
         },
-        "adminunit-l1": {
+        "country": {
           "type": "string",
           "predicate": "locn:adminUnitL1"
         },
@@ -132,7 +132,7 @@
           "type": "url",
           "predicate": "adms:identifier"
         },
-        "locator-name": {
+        "name": {
           "type": "string",
           "predicate": "locn:locatorName"
         },
