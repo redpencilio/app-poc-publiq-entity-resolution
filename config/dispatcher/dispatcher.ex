@@ -1,4 +1,4 @@
-efmodule Dispatcher do
+defmodule Dispatcher do
   use Matcher
   define_accept_types [
     html: [ "text/html", "application/xhtml+html" ],
