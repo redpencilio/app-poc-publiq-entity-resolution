@@ -140,10 +140,6 @@
           "type": "string",
           "predicate": "locn:locatorName"
         },
-        "geometry": {
-          "type": "url",
-          "predicate": "locn:geometry"
-        },
         "invalidated": {
           "type": "date",
           "predicate": "prov:invalidatedAtTime"
@@ -162,12 +158,39 @@
           "predicate": "locn:address",
           "target": "address",
           "cardinality": "one"
+        },
+        "geometry": {
+          "predicate": "locn:geometry",
+          "target": "geometry",
+          "cardinality": "one"
         }
       },
       "features": [
         "include-uri"
       ],
       "new-resource-base": "http://data.publiq.be/locations/"
+    },
+    "geometries": {
+      "name": "geometry",
+      "class": "locn:Geometry",
+      "attributes": {
+        "gml": {
+          "type": "string",
+          "predicate": "geo:asGML"
+        }
+      },
+      "relationships": {
+        "location": {
+          "predicate": "locn:geometry",
+          "target": "location",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
+      "features": [
+        "include-uri"
+      ],
+      "new-resource-base": "http://data.publiq.be/geometries/"
     }
   }
 }
