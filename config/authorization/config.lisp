@@ -56,6 +56,8 @@
   ("dct:Location" -> _))
 (define-graph mappings ("http://mu.semte.ch/graphs/entity-mappings")
   ("sssom:Mapping" -> _))
+(define-graph manual-mappings ("http://mu.semte.ch/graphs/entity-manual-mappings")
+  ("sssom:Mapping" -> _))  
 
 (supply-allowed-group "public")
 
@@ -76,4 +78,8 @@
 
 (grant (read)
   :to-graph (mappings)
+  :for-allowed-group "logged-in")
+
+(grant (read write)
+  :to-graph (manual-mappings)
   :for-allowed-group "logged-in")

@@ -52,7 +52,19 @@
           "predicate": "sssom:predicate_id"
         }
       },
-      "relationships": {},
+      "relationships": {
+        "derived-from": {
+          "predicate": "prov:wasDerivedFrom",
+          "target": "mapping",
+          "cardinality": "one"
+        },
+        "has-derivation": {
+          "predicate": "prov:wasDerivedFrom",
+          "target": "mapping",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
       "features": [
         "include-uri"
       ],
