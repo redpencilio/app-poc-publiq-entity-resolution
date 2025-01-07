@@ -9,7 +9,7 @@
 ;;; configuration
 (in-package :client)
 (setf *log-sparql-query-roundtrip* t)
-(setf *backend* "http://virtuoso:8890/sparql")
+(setf *backend* "http://triplestore:8890/sparql")
 
 (in-package :server)
 (setf *log-incoming-requests-p* nil)
@@ -42,10 +42,17 @@
 
 (supply-allowed-group "public")
 
+(supply-allowed-group "logged-in"
+  :parameters ()
+  :query "PREFIX session: <http://mu.semte.ch/vocabularies/session/>
+      SELECT ?account WHERE {
+          <SESSION_ID> session:account ?account .
+      } LIMIT 1")
+
 (grant (read)
-  :to-graph (ticketgang-locaties 
+  :to-graph (ticketgang-locaties
              kunstenpunt-locaties
              cultuurparticipatie-metadata 
              publiq-uit-locaties 
              publiq-uit-organisatoren)
-  :for-allowed-group "public")
+  :for-allowed-group "logged-in")

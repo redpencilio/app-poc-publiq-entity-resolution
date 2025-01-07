@@ -39,7 +39,7 @@ services:
       - resource:backend
     labels:
       - "logging=true"
-    restart: always  
+    restart: always
   database:
     image: semtech/sparql-parser:0.0.13
     volumes:
@@ -47,7 +47,7 @@ services:
       - ./data/authorization:/data
     labels:
       - "logging=true"
-    restart: always        
+    restart: always
   triplestore:
     image: redpencil/virtuoso:1.3.0-rc.1
     environment:
@@ -63,10 +63,10 @@ services:
   delta-notifier:
     image: semtech/mu-delta-notifier:0.4.0
     volumes:
-        - ./config/delta:/config 
+        - ./config/delta:/config
     labels:
       - "logging=true"
-    restart: always      
+    restart: always
   migrations:
     # Publiq data loaded through Virtuoso toLoad because of its size
     image: semtech/mu-migrations-service:0.9.0
@@ -77,6 +77,27 @@ services:
     labels:
       - "logging=true"
     restart: always
+  login:
+    image: semtech/mu-login-service:3.0.0
+    environment:
+      USERS_GRAPH: "http://mu.semte.ch/graphs/users"
+      SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
+    links:
+      - database:database
+    labels:
+      - "logging=true"
+    restart: always
+  registration:
+    image: semtech/mu-registration-service:2.7.3
+    entrypoint: echo "Only needed for mu script"
+    environment:
+      USERS_GRAPH: "http://mu.semte.ch/graphs/users"
+      SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
+    links:
+      - database:database
+    labels:
+      - "logging=true"
+    restart: "no"
   entity-mapping:
     image: redpencil/publiq-entity-mapping-service:latest
     environment:

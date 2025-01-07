@@ -23,6 +23,12 @@ services:
     restart: "no"
   migrations:
     restart: "no"
+    volumes:
+      - ./config/development/migrations:/data/migrations/dev
+  login:
+    restart: "no"
+  registration:
+    restart: "no"
   entity-mapping:
     environment:
       MODE: "development"
