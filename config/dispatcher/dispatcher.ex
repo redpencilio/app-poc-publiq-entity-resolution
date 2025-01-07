@@ -34,15 +34,15 @@ defmodule Dispatcher do
   #################
 
   match "/mappings/*path", %{ layer: :services, accept: %{ json: true } } do
-    forward conn, path, "http://cache/accounts/"
+    Proxy.forward conn, path, "http://cache/accounts/"
   end
 
   match "/addresses/*path", %{ layer: :services, accept: %{ json: true } } do
-    forward conn, path, "http://cache/addresses/"
+    Proxy.forward conn, path, "http://cache/addresses/"
   end
 
   match "/locations/*path", %{ layer: :services, accept: %{ json: true } } do
-    forward conn, path, "http://cache/locations/"
+    Proxy.forward conn, path, "http://cache/locations/"
   end
 
   match "/sessions/*path", @any do
