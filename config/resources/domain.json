@@ -1,0 +1,196 @@
+{
+  "version": "0.1",
+  "prefixes": {
+    "prov": "http://www.w3.org/ns/prov#",
+    "locn": "http://www.w3.org/ns/locn#",
+    "sssom": "https://w3id.org/sssom/",
+    "dct": "http://purl.org/dc/terms/",
+    "ext": "http://mu.semte.ch/vocabularies/ext/",
+    "uitplatform": "https://data.uitwisselingsplatform.be/ns/platform#",
+    "adms": "http://www.w3.org/ns/adms#",
+    "uitdatabank": "https://data.publiq.be/ns/uitdatabank#"
+  },
+  "resources": {
+    "mappings": {
+      "name": "mapping",
+      "class": "sssom:Mapping",
+      "attributes": {
+        "created": {
+          "type": "date",
+          "predicate": "dct:created"
+        },
+        "modified": {
+          "type": "date",
+          "predicate": "dct:modified"
+        },
+        "justification": {
+          "type": "url",
+          "predicate": "sssom:mapping_justification"
+        },
+        "subject-label": {
+          "type": "string",
+          "predicate": "sssom:subject_label"
+        },
+        "object-label": {
+          "type": "string",
+          "predicate": "sssom:object_label"
+        },
+        "score": {
+          "type": "float",
+          "predicate": "sssom:similarity_score"
+        },
+        "subject": {
+          "type": "url",
+          "predicate": "sssom:subject_id"
+        },
+        "object": {
+          "type": "url",
+          "predicate": "sssom:object_id"
+        },
+        "predicate": {
+          "type": "url",
+          "predicate": "sssom:predicate_id"
+        }
+      },
+      "relationships": {},
+      "features": [
+        "include-uri"
+      ],
+      "new-resource-base": "http://data.publiq.be/mappings/"
+    },
+    "addresses": {
+      "name": "address",
+      "class": "locn:Address",
+      "attributes": {
+        "created": {
+          "type": "date",
+          "predicate": "dct:created"
+        },
+        "modified": {
+          "type": "date",
+          "predicate": "dct:modified"
+        },
+        "address": {
+          "type": "language-string",
+          "predicate": "locn:fullAddress"
+        },
+        "postcode": {
+          "type": "string",
+          "predicate": "locn:postCode"
+        },
+        "city": {
+          "type": "language-string",
+          "predicate": "locn:postName"
+        },
+        "street": {
+          "type": "language-string",
+          "predicate": "locn:thoroughfare"
+        },
+        "number": {
+          "type": "string",
+          "predicate": "locn:locatorDesignator"
+        },
+        "country": {
+          "type": "string",
+          "predicate": "locn:adminUnitL1"
+        },
+        "po-box": {
+          "type": "string",
+          "predicate": "locn:poBox"
+        }
+      },
+      "relationships": {
+        "location": {
+          "predicate": "locn:address",
+          "target": "location",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
+      "features": [
+        "include-uri"
+      ],
+      "new-resource-base": "http://data.publiq.be/addresses/"
+    },
+    "locations": {
+      "name": "location",
+      "class": "dct:Location",
+      "attributes": {
+        "created": {
+          "type": "date",
+          "predicate": "dct:created"
+        },
+        "modified": {
+          "type": "date",
+          "predicate": "dct:modified"
+        },
+        "label": {
+          "type": "url",
+          "predicate": "rdfs:label"
+        },
+        "processed": {
+          "type": "date",
+          "predicate": "uitplatform:verwerktOp"
+        },
+        "identifier": {
+          "type": "url",
+          "predicate": "adms:identifier"
+        },
+        "name": {
+          "type": "string",
+          "predicate": "locn:locatorName"
+        },
+        "invalidated": {
+          "type": "date",
+          "predicate": "prov:invalidatedAtTime"
+        },
+        "available-from": {
+          "type": "date",
+          "predicate": "uitdatabank:availableFrom"
+        },
+        "workflow-status": {
+          "type": "url",
+          "predicate": "uitdatabank:workflowStatus"
+        }
+      },
+      "relationships": {
+        "address": {
+          "predicate": "locn:address",
+          "target": "address",
+          "cardinality": "one"
+        },
+        "geometry": {
+          "predicate": "locn:geometry",
+          "target": "geometry",
+          "cardinality": "one"
+        }
+      },
+      "features": [
+        "include-uri"
+      ],
+      "new-resource-base": "http://data.publiq.be/locations/"
+    },
+    "geometries": {
+      "name": "geometry",
+      "class": "locn:Geometry",
+      "attributes": {
+        "gml": {
+          "type": "string",
+          "predicate": "geo:asGML"
+        }
+      },
+      "relationships": {
+        "location": {
+          "predicate": "locn:geometry",
+          "target": "location",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
+      "features": [
+        "include-uri"
+      ],
+      "new-resource-base": "http://data.publiq.be/geometries/"
+    }
+  }
+}
