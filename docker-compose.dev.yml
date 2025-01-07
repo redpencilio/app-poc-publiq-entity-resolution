@@ -3,6 +3,8 @@ services:
     restart: "no"
   dispatcher:
     restart: "no"
+    ports:
+      - "80:80"
   frontend:
     restart: "no"
   resource:
