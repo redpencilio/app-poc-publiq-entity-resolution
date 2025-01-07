@@ -1,10 +1,10 @@
 services:
   identifier:
     restart: "no"
-  dispatcher:
-    restart: "no"
     ports:
       - "80:80"
+  dispatcher:
+    restart: "no"
   frontend:
     restart: "no"
   resource:
