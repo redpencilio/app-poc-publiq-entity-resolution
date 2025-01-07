@@ -95,9 +95,9 @@ services:
       SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
     links:
       - database:database
-    restart: "no"
     labels:
       - "logging=true"
+    restart: "no"
   entity-mapping:
     image: redpencil/publiq-entity-mapping-service:latest
     environment:
