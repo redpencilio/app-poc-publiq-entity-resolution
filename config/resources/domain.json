@@ -48,6 +48,14 @@
           "type": "url",
           "predicate": "sssom:object_id"
         },
+        "subject-type": {
+          "type": "url",
+          "predicate": "sssom:subject_type"
+        },
+        "object-type": {
+          "type": "url",
+          "predicate": "sssom:object_type"
+        },
         "predicate": {
           "type": "url",
           "predicate": "sssom:predicate_id"
