@@ -18,6 +18,12 @@
           "predicate": "foaf:account",
           "target": "account",
           "cardinality": "many"
+        },
+        "mappings": {
+          "predicate": "dct:creator",
+          "target": "mapping",
+          "cardinality": "many",
+          "inverse": true
         }
       },
       "features": ["include-uri"],
