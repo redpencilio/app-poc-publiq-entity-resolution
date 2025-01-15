@@ -1,3 +1,13 @@
-data/db
-config/virtuoso/toLoad
+# Virtuoso files /data/db
+/data/db/*
+!/data/db/toLoad
+!/data/db/toLoad/*
+
+# Migrations
+config/migrations/*
+!config/migrations/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-*
+*sensitive*
+
+config/development
 docker-compose.override.yml
+*~
