@@ -5,17 +5,13 @@ defmodule Dispatcher do
     json: [ "application/json", "application/vnd.api+json" ]
   ]
 
-  @any %{}
-  @json %{ accept: %{ json: true } }
-  @html %{ accept: %{ html: true } }
-
   define_layers [ :static, :web_page, :services, :fall_back, :not_found ]
 
   ###############
   # STATIC
   ###############
   get "/assets/*path", %{ layer: :static } do
-    Proxy.forward conn, path, "http://frontend/assets/"
+    forward conn, path, "http://frontend/assets/"
   end
 
   get "/favicon.ico", %{ layer: :static } do
@@ -25,8 +21,8 @@ defmodule Dispatcher do
   #################
   # FRONTEND PAGES
   #################
-  get "/*path", %{ layer: :web_page, accept: %{ html: true } } do
-    Proxy.forward conn, [], "http://frontend/index.html"
+  get "/*_path", %{ layer: :web_page, accept: %{ html: true } } do
+    forward conn, [], "http://frontend/index.html"
   end
 
   #################
@@ -34,19 +30,27 @@ defmodule Dispatcher do
   #################
 
   match "/mappings/*path", %{ layer: :services, accept: %{ json: true } } do
-    Proxy.forward conn, path, "http://cache/mappings/"
+    forward conn, path, "http://cache/mappings/"
   end
 
   match "/addresses/*path", %{ layer: :services, accept: %{ json: true } } do
-    Proxy.forward conn, path, "http://cache/addresses/"
+    forward conn, path, "http://cache/addresses/"
   end
 
   match "/locations/*path", %{ layer: :services, accept: %{ json: true } } do
-    Proxy.forward conn, path, "http://cache/locations/"
+    forward conn, path, "http://cache/locations/"
   end
 
-  match "/sessions/*path", @any do
-    Proxy.forward conn, path, "http://login/sessions/"
+  get "/people/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://resource/people/"
+  end
+
+  get "/accounts/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://resource/accounts/"
+  end
+
+  match "/sessions/*path", %{ layer: :services, accept: %{ json: true } } do
+    forward conn, path, "http://login/sessions/"
   end
 
   match "/*_", %{ layer: :not_found } do

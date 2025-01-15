@@ -9,3 +9,4 @@
 (setf sparql:*query-log-types* nil) ;; hint: use app-http-logger for logging queries instead, all is '(:default :update-group :update :query :ask)
 
 (read-domain-file "domain.json")
+(read-domain-file "users.json")

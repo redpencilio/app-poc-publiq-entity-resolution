@@ -34,10 +34,22 @@
   :mu "http://mu.semte.ch/vocabularies/core/"
   :session "http://mu.semte.ch/vocabularies/session/"
   :ext "http://mu.semte.ch/vocabularies/ext/"
+  :foaf "http://xmlns.com/foaf/0.1/"
   :sssom "https://w3id.org/sssom/"
   :locn "http://www.w3.org/ns/locn#"
-  :dct "http://purl.org/dc/terms/"
-  )
+  :dct "http://purl.org/dc/terms/")
+
+(define-graph users ("http://mu.semte.ch/graphs/users")
+  ("foaf:Person"
+    -> "foaf:name"
+    -> "foaf:account"
+    -> "dct:created"
+    -> "dct:modified")
+  ("foaf:OnlineAccount"
+    -> "foaf:accountName"
+    -> "foaf:accountServiceHomepage"
+    -> "dct:created"
+    -> "dct:modified"))
 
 (define-graph ticketgang-locaties ("http://locatieslinkeddata.ticketgang-locations.ticketing.acagroup.be")
   ("locn:Address" -> _)
@@ -57,7 +69,7 @@
 (define-graph mappings ("http://mu.semte.ch/graphs/entity-mappings")
   ("sssom:Mapping" -> _))
 (define-graph manual-mappings ("http://mu.semte.ch/graphs/entity-manual-mappings")
-  ("sssom:Mapping" -> _))  
+  ("sssom:Mapping" -> _))
 
 (supply-allowed-group "public")
 
@@ -69,15 +81,15 @@
       } LIMIT 1")
 
 (grant (read)
-  :to-graph (ticketgang-locaties 
+  :to-graph (ticketgang-locaties
              kunstenpunt-locaties
-             cultuurparticipatie-metadata 
-             publiq-uit-locaties 
+             cultuurparticipatie-metadata
+             publiq-uit-locaties
              publiq-uit-organisatoren)
   :for-allowed-group "logged-in")
 
 (grant (read)
-  :to-graph (mappings)
+  :to-graph (mappings users)
   :for-allowed-group "logged-in")
 
 (grant (read write)

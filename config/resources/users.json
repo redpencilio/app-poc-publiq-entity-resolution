@@ -1,0 +1,51 @@
+{
+  "version": "0.1",
+  "prefixes": {
+    "foaf": "http://xmlns.com/foaf/0.1/"
+  },
+  "resources": {
+    "people": {
+      "name": "person",
+      "class": "foaf:Person",
+      "attributes": {
+        "name": {
+          "type": "string",
+          "predicate": "foaf:name"
+        }
+      },
+      "relationships": {
+        "accounts": {
+          "predicate": "foaf:account",
+          "target": "account",
+          "cardinality": "many"
+        }
+      },
+      "features": ["include-uri"],
+      "new-resource-base": "http://data.publiq.be/persons/"
+    },
+    "accounts": {
+      "name": "account",
+      "class": "foaf:OnlineAccount",
+      "attributes": {
+        "account-name": {
+          "type": "string",
+          "predicate": "foaf:accountName"
+        },
+        "account-service-homepage": {
+          "type": "url",
+          "predicate": "foaf:accountServiceHomepage"
+        }
+      },
+      "relationships": {
+        "user": {
+          "predicate": "foaf:account",
+          "target": "person",
+          "cardinality": "one",
+          "inverse": true
+        }
+      },
+      "features": ["include-uri"],
+      "new-resource-base": "http://data.publiq.be/accounts/"
+    }
+  }
+}
