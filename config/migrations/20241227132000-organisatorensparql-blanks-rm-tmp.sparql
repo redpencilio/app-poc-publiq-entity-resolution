@@ -1,8 +1,0 @@
-PREFIX :    <http://example.com/>
-
-# From https://stackoverflow.com/a/47532851
-
-############################
-# Clear blank node aliases #
-
-CLEAR GRAPH :aliases
