@@ -155,7 +155,7 @@
           "predicate": "dct:modified"
         },
         "label": {
-          "type": "url",
+          "type": "string",
           "predicate": "rdfs:label"
         },
         "processed": {
