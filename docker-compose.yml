@@ -23,7 +23,7 @@ services:
       - "logging=true"
     restart: always
   resource:
-    image: semtech/mu-cl-resources:1.25.0
+    image: semtech/mu-cl-resources:1.26.0
     links:
       - database:database
     volumes:
