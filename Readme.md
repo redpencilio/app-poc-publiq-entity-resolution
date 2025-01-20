@@ -37,7 +37,7 @@ mkdir -p data/skolemized/20241004
 mv data/ttl-converted/20241004/*_skolemized.ttl data/skolemized/20241004
 ```
 
-# copy skolemized data to database load folder
+Copy skolemized data to database load folder
 ```sh
 cp data/skolemized/20241004/*.ttl config/virtuoso/toLoad
 ```
