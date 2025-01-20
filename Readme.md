@@ -13,20 +13,33 @@ touch docker-compose.override.yml
 
 ## Loading data
 
-Transform provided nquad dumps into turtle and place them into the `config/virtuoso/toLoad` folder.
+Convert nquads (with 1 graph per entity) to ttl
 ```sh
-rapper -i nquads -o turtle -q be.acagroup.ticketing.ticketgang-locations.locatieslinkeddata_2024-10-04_13-16-18.nq > be.acagroup.ticketing.ticketgang-locations.locatieslinkeddata_2024-10-04_13-16-18.ttl
-rapper -i nquads -o turtle -q be.kunsten.professionelekunsten.kunstenpunt-locaties.locatiessparql_2024-10-04_13-16-57.nq > be.kunsten.professionelekunsten.kunstenpunt-locaties.locatiessparql_2024-10-04_13-16-57.ttl
-rapper -i nquads -o turtle -q be.publiq.vrijetijdsparticipatie.cultuurparticipatie-metadata.metadata_2024-10-04_13-17-16.nq > be.publiq.vrijetijdsparticipatie.cultuurparticipatie-metadata.metadata_2024-10-04_13-17-16.ttl
-rapper -i nquads -o turtle -q be.publiq.vrijetijdsparticipatie.publiq-uit-locaties.placessparql_2024-10-04_13-17-08.nq > be.publiq.vrijetijdsparticipatie.publiq-uit-locaties.placessparql_2024-10-04_13-17-08.ttl
-rapper -i nquads -o turtle -q be.publiq.vrijetijdsparticipatie.publiq-uit-organisatoren.organisatorensparql_2024-10-04_13-17-23.nq > be.publiq.vrijetijdsparticipatie.publiq-uit-organisatoren.organisatorensparql_2024-10-04_13-17-23.
+for file in data/source-dumps/20241004/*.nq; do
+    if [ -f "$file" ]; then
+        rapper  -i nquads -o turtle -q "$file" > "$(dirname "$file")/$(basename "$file" .nq).ttl"
+    fi
+done
+mkdir -p data/ttl-converted/20241004
+mv data/source-dumps/20241004/*.ttl data/ttl-converted/20241004
 ```
 
-Add a `.graph`-file for each turtle-file
+Skolemize blank nodes
 ```sh
-echo "http://locatieslinkeddata.ticketgang-locations.ticketing.acagroup.be" > be.acagroup.ticketing.ticketgang-locations.locatieslinkeddata_2024-10-04_13-16-18.ttl.graph
-echo "http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be" > be.publiq.vrijetijdsparticipatie.publiq-uit-locaties.placessparql_2024-10-04_13-17-08.ttl.graph
-echo "http://locatiessparql.kunstenpunt-locaties.professionelekunsten.kunsten.be" > be.kunsten.professionelekunsten.kunstenpunt-locaties.locatiessparql_2024-10-04_13-16-57.ttl.graph
-echo "http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be" > be.publiq.vrijetijdsparticipatie.publiq-uit-organisatoren.organisatorensparql_2024-10-04_13-17-23.ttl.graph
-echo "http://metadata.cultuurparticipatie-metadata.vrijetijdsparticipatie.publiq.be" > be.publiq.vrijetijdsparticipatie.cultuurparticipatie-metadata.metadata_2024-10-04_13-17-16.ttl.graph
+chmod +x skolemize.py
+for file in data/ttl-converted/20241004/*.ttl; do
+    if [ -f "$file" ]; then
+        echo "skolemizing $file"
+        ./skolemize.py "$file"
+    fi
+done
+mkdir -p data/skolemized/20241004
+mv data/ttl-converted/20241004/*_skolemized.ttl data/skolemized/20241004
 ```
+
+# copy skolemized data to database load folder
+```sh
+cp data/skolemized/20241004/*.ttl config/virtuoso/toLoad
+```
+*Make sure to add a .graph file in the toLoad folder, so the triples get loaded into the expected graph. See https://docs.openlinksw.com/virtuoso/rdfperfloading/#rdfperfloadingutility for more information about the .graph extension*
+

@@ -1,7 +1,6 @@
 # Virtuoso files /data/db
-/data/db/*
-!/data/db/toLoad
-!/data/db/toLoad/*
+/data/*
+/config/virtuoso/toLoad/*
 
 # Migrations
 config/migrations/*
@@ -11,3 +10,5 @@ config/migrations/*
 config/development
 docker-compose.override.yml
 *~
+
+*.env
