@@ -70,7 +70,7 @@
           "predicate": "dct:creator",
           "target": "person",
           "cardinality": "one"
-        }
+        },
         "derived-from": {
           "predicate": "prov:wasDerivedFrom",
           "target": "mapping",
