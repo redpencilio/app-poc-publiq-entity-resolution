@@ -11,6 +11,10 @@ echo "COMPOSE_FILE=docker-compose.yml:docker-compose.dev.yml:docker-compose.over
 touch docker-compose.override.yml
 ```
 
+### Running on linux/arm64 platform
+
+Running on the newest Mac's with an ARM architecture is possible, but requires some additional configuration. Some of the used Docker images are compiled for `linux/arm64` specifically, others aren't and require emulation at runtime. Emulation through Apple's [Rosetta](https://support.apple.com/en-us/102527) must be enabled in your Docker settings. [This Docker blog article](https://www.docker.com/blog/docker-desktop-4-25/) explains how to do that. Once enabled, the `platform: linux/amd64` flag in the `docker-compose.yml`-file will tell you system to run that image with emulation through Rosetta.
+
 ## Loading data
 
 Convert nquads (with 1 graph per entity) to ttl
