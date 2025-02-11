@@ -1,6 +1,6 @@
 services:
   identifier:
-    image: semtech/mu-identifier:1.10.3
+    image: semtech/mu-identifier:feature-arm64-build
     environment:
       SESSION_COOKIE_SECURE: "on"
     links:
@@ -9,7 +9,7 @@ services:
       - "logging=true"
     restart: always
   dispatcher:
-    image: semtech/mu-dispatcher:2.1.0-beta.2
+    image: semtech/mu-dispatcher:feature-arm64-build
     links:
       - resource:resource
     volumes:
@@ -19,11 +19,13 @@ services:
     restart: always
   frontend:
     image: redpencil/frontend-poc-publiq-entity-resolution:0.5.1
+    platform: linux/amd64
     labels:
       - "logging=true"
     restart: always
   resource:
     image: semtech/mu-cl-resources:1.26.0
+    platform: linux/amd64
     links:
       - database:database
     volumes:
@@ -34,7 +36,7 @@ services:
       - "logging=true"
     restart: always
   cache:
-    image: semtech/mu-cache:2.0.2
+    image: semtech/mu-cache:feature-arm64-build
     links:
       - resource:backend
     labels:
@@ -42,6 +44,7 @@ services:
     restart: always
   database:
     image: semtech/sparql-parser:0.0.13
+    platform: linux/amd64
     volumes:
       - ./config/authorization:/config
       - ./data/authorization:/data
@@ -63,6 +66,7 @@ services:
     restart: always
   delta-notifier:
     image: semtech/mu-delta-notifier:0.4.0
+    platform: linux/amd64
     volumes:
         - ./config/delta:/config
     labels:
@@ -71,6 +75,7 @@ services:
   migrations:
     # Publiq data loaded through Virtuoso toLoad because of its size
     image: semtech/mu-migrations-service:0.9.0
+    platform: linux/amd64
     environment:
       MU_SPARQL_ENDPOINT: "http://triplestore:8890/sparql"
     volumes:
@@ -80,6 +85,7 @@ services:
     restart: always
   login:
     image: semtech/mu-login-service:3.0.0
+    platform: linux/amd64
     environment:
       USERS_GRAPH: "http://mu.semte.ch/graphs/users"
       SESSIONS_GRAPH: "http://mu.semte.ch/graphs/sessions"
@@ -90,6 +96,7 @@ services:
     restart: always
   registration:
     image: semtech/mu-registration-service:2.7.3
+    platform: linux/amd64
     entrypoint: echo "Only needed for mu script"
     environment:
       USERS_GRAPH: "http://mu.semte.ch/graphs/users"
