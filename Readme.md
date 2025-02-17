@@ -1,6 +1,9 @@
 # Entity Resolution App
 
-For Publiq.
+A proof of concept for Publiq to identify and resolve identical or related entities in their RDF-datasets. Focus on Addresses and Locations.
+The main software-stack is built upon semantic.works, a micro-service-based, linked-data-first architecture (previously known as mu.semte.ch). This repository contains the necessary configuration for each service that the stack is composed of. Please refer to the documentation of mu-project for more information on how to run and configure a semantic.works-based project.
+Includes a custom [entity-mapping-service](https://github.com/redpencilio/publiq-entity-mapping-service) and a frontend for manual verification of the produced mappings.
+Heavily relies upon the [sssom standard](https://mapping-commons.github.io/sssom/) for representing the mapping metadata.
 
 ## First startup
 
@@ -15,9 +18,10 @@ touch docker-compose.override.yml
 
 Running on the newest Mac's with an ARM architecture is possible, but requires some additional configuration. Some of the used Docker images are compiled for `linux/arm64` specifically, others aren't and require emulation at runtime. Emulation through Apple's [Rosetta](https://support.apple.com/en-us/102527) must be enabled in your Docker settings. [This Docker blog article](https://www.docker.com/blog/docker-desktop-4-25/) explains how to do that. Once enabled, the `platform: linux/amd64` flag in the `docker-compose.yml`-file will tell you system to run that image with emulation through Rosetta.
 
-## Loading data
+### Preprocessing data
 
-Convert nquads (with 1 graph per entity) to ttl
+Convert nquads (with 1 graph per entity) to ttl.
+*This step makes use of the `rapper` cli-tool, which is part of the [Raptor toolkit](https://librdf.org/raptor/rapper.html). This tool is available in most of the common Linux distro packages registries. Installation [through Homebrew](https://formulae.brew.sh/formula/raptor) seems available, but hasn't been tested.*
 ```sh
 for file in data/source-dumps/20241004/*.nq; do
     if [ -f "$file" ]; then
@@ -28,7 +32,8 @@ mkdir -p data/ttl-converted/20241004
 mv data/source-dumps/20241004/*.ttl data/ttl-converted/20241004
 ```
 
-Skolemize blank nodes
+Skolemize blank nodes.
+*The script used in this step requires a local Python 3.x installation with the rdflib package installed*
 ```sh
 chmod +x skolemize.py
 for file in data/ttl-converted/20241004/*.ttl; do
@@ -41,13 +46,15 @@ mkdir -p data/skolemized/20241004
 mv data/ttl-converted/20241004/*_skolemized.ttl data/skolemized/20241004
 ```
 
+### Loading data
+
 Copy skolemized data to database load folder
 ```sh
 cp data/skolemized/20241004/*.ttl config/virtuoso/toLoad
 ```
 *Make sure to add a .graph file in the toLoad folder, so the triples get loaded into the expected graph. See https://docs.openlinksw.com/virtuoso/rdfperfloading/#rdfperfloadingutility for more information about the .graph extension*
 
-Make sure that all data that will be displayed through the frontend disposes of a `mu:uuid`. This is required for the inner working of the mu-cl-resource jsonapi inner workings.
+Make sure that all data that will be displayed through the frontend disposes of a `mu:uuid`. This is required for the mu-cl-resource jsonapi inner workings.
 
 ```sparql
 PREFIX mu:      <http://mu.semte.ch/vocabularies/core/>
@@ -71,6 +78,8 @@ INSERT {
 }
 ```
 
+### Running the mapping process
+
 Run automated Address mapping
 ```
 curl http://localhost:8888/map-addresses
@@ -80,6 +89,8 @@ Run automated Location mapping
 ```
 curl http://localhost:8888/map-locations-by-address
 ```
+
+### Verifying and exporting mapping data
 
 Manually verify Location mappings through the frontend.  
 Produced mappings can be dumped by running following `CONSTRUCT`-query on the SPARQL-endpoint at `http://localhost:8890/sparql`. Make sure to select the desired output-format (beautified Turtle)
@@ -94,6 +105,8 @@ WHERE {
     }
 }
 ```
+
+### Incremental mapping runs
 
 Once some verified data is available, new Address- & Location-data can be loaded in order to perform a new mapping run, but incrementally this time, only mapping the newly provided data, but taking into account previously verified mappings.  
 
