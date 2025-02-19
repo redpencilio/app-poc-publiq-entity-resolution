@@ -1,0 +1,39 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX sssom: <https://w3id.org/sssom/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX ext: <http://mu.semte.ch/vocabularies/ext/>
+
+select DISTINCT ?location ?locator_name ?full_address
+WHERE {
+    {
+        SELECT DISTINCT ?cluster (count(?member) as ?count)
+        WHERE {
+            GRAPH <http://mu.semte.ch/graphs/entity-clusters> {
+                ?cluster a ext:Cluster .
+                ?cluster ext:member ?member
+            }
+        }
+    }
+    GRAPH <http://mu.semte.ch/graphs/entity-clusters> {
+        ?cluster ext:member ?mapping .
+    }
+    GRAPH <http://mu.semte.ch/graphs/entity-manual-mappings> {
+        ?mapping a sssom:Mapping ;
+            dct:created ?created .
+        {
+            ?mapping sssom:subject_id ?location .
+        }
+        UNION
+        {
+            ?mapping sssom:object_id ?location .
+        }
+        ?mapping sssom:predicate_id ?predicate_id .
+    }
+    ?location a dct:Location ;
+        locn:address ?address ;
+        (locn:locatorName | locn:LocatorName) ?locator_name .
+    ?address (locn:fulladdress | locn:fullAddress) ?full_address .
+}
+GROUP BY ?location
+ORDER By DESC(?count) ?cluster

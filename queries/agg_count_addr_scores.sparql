@@ -1,0 +1,21 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX sssom: <https://w3id.org/sssom/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX loc: <http://purl.org/ontomedia/core/space#>
+
+SELECT ?rounded_score (COUNT(?mapping) as ?address_mappings)
+WHERE {
+    ?mapping a sssom:Mapping ;
+        dct:created ?created ;
+        sssom:subject_id ?a ;
+        sssom:subject_label ?a_label ;
+        sssom:object_id ?b ;
+        sssom:object_label ?b_label ;
+        sssom:similarity_score ?score .
+    ?a a locn:Address  .
+    ?b a locn:Address  .
+  BIND(ROUND(?score) as ?rounded_score)
+}
+GROUP BY ?rounded_score
+ORDER BY DESC(?rounded_score)

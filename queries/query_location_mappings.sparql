@@ -1,0 +1,25 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX sssom: <https://w3id.org/sssom/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT ?a_locator_name ?b_locator_name ?score ?a_full_address ?b_full_address
+WHERE {
+    ?mapping a sssom:Mapping ;
+        dct:created ?created ;
+        sssom:subject_id ?a ;
+        sssom:subject_label ?a_label ;
+        sssom:object_id ?b ;
+        sssom:object_label ?b_label ;
+        sssom:similarity_score ?score .
+    OPTIONAL { ?mapping sssom:predicate_id ?predicate_id } # may be <http://www.w3.org/2004/02/skos/core#exactMatch>
+    ?a a dct:Location ;
+        locn:address ?a_address ;
+        (locn:locatorName | locn:LocatorName) ?a_locator_name .
+    ?b a dct:Location ;
+        locn:address ?b_address ;
+        (locn:locatorName | locn:LocatorName) ?b_locator_name .
+    ?a_address (locn:fulladdress | locn:fullAddress) ?a_full_address .
+    ?b_address (locn:fulladdress | locn:fullAddress) ?b_full_address .
+}
+ORDER BY DESC(?score)

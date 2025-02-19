@@ -1,0 +1,67 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX sssom: <https://w3id.org/sssom/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+INSERT {
+    GRAPH <http://mu.semte.ch/graphs/entity-mappings> {
+        ?mapping_uri
+            a sssom:Mapping ;
+                sssom:subject_id ?a ;
+                sssom:subject_label ?a_full_address ;
+                sssom:object_id ?b ;
+                sssom:object_label ?b_full_address ;
+                sssom:predicate_id skos:exactMatch ;
+                sssom:similarity_score 100.0 .
+    }
+}
+WHERE {
+    {
+        SELECT DISTINCT ?a ?b ?a_full_address ?b_full_address
+        WHERE {
+            GRAPH ?g {
+                ?a a locn:Address .
+                ?a (locn:postcode | locn:postCode) ?postcode .
+                ?a locn:postName ?postname .
+                ?a locn:thoroughfare ?thoroughfare .
+                ?a locn:locatorDesignator ?locator_designator .
+                ?a locn:adminUnitL1 ?adminunitl1 .
+                OPTIONAL { ?a (locn:fulladdress | locn:fullAddress) ?a_full_address }
+                FILTER NOT EXISTS { ?a ^locn:address/prov:invalidatedAtTime ?a_time . }
+
+                ?b a locn:Address .
+                ?b (locn:postcode | locn:postCode) ?postcode .
+                ?b locn:postName ?postname .
+                ?b locn:thoroughfare ?thoroughfare .
+                ?b locn:locatorDesignator ?locator_designator .
+                ?b locn:adminUnitL1 ?adminunitl1 .
+                OPTIONAL { ?b (locn:fulladdress | locn:fullAddress) ?b_full_address }
+                FILTER NOT EXISTS { ?b ^locn:address/prov:invalidatedAtTime ?b_time . }
+
+                FILTER(?a != ?b)
+            }
+            VALUES ?g {
+                <http://locatieslinkeddata.ticketgang-locations.ticketing.acagroup.be>
+                <http://locatiessparql.kunstenpunt-locaties.professionelekunsten.kunsten.be>
+                <http://metadata.cultuurparticipatie-metadata.vrijetijdsparticipatie.publiq.be>
+                <http://placessparql.publiq-uit-locaties.vrijetijdsparticipatie.publiq.be>
+                <http://organisatorensparql.publiq-uit-organisatoren.vrijetijdsparticipatie.publiq.be>
+            }
+        }
+    }
+    FILTER NOT EXISTS {
+        {
+            ?existing_mapping
+                sssom:subject_id ?a ;
+                sssom:object_id ?b .
+        }
+        UNION
+        {
+            ?existing_mapping
+                sssom:subject_id ?b ;
+                sssom:object_id ?a .
+        }
+    }
+    BIND(LCASE(STRUUID()) AS ?mapping_uuid)
+    BIND(URI(CONCAT("http://data.publiq.be/mappings/", ?mapping_uuid)) AS ?mapping_uri)
+}

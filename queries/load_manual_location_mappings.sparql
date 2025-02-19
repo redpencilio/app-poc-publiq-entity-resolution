@@ -1,0 +1,26 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX locn: <http://www.w3.org/ns/locn#>
+PREFIX sssom: <https://w3id.org/sssom/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT ?a_locator_name ?b_locator_name ?a_full_address ?b_full_address ?predicate_id
+WHERE {
+    GRAPH <http://mu.semte.ch/graphs/entity-manual-mappings> {
+        ?mapping a sssom:Mapping ;
+            dct:created ?created ;
+            sssom:subject_id ?a ;
+            sssom:object_id ?b  .
+        ?mapping sssom:predicate_id ?predicate_id .
+    }
+    ?a a dct:Location ;
+        locn:address ?a_address ;
+        (locn:locatorName | locn:LocatorName) ?a_locator_name .
+    ?b a dct:Location ;
+        locn:address ?b_address ;
+        (locn:locatorName | locn:LocatorName) ?b_locator_name .
+    ?a_address (locn:fulladdress | locn:fullAddress) ?a_full_address .
+    ?b_address (locn:fulladdress | locn:fullAddress) ?b_full_address .
+
+}
+ORDER BY DESC(?created)
+LIMIT 100

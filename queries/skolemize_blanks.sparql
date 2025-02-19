@@ -1,0 +1,34 @@
+
+DELETE {
+    GRAPH ?g {
+        ?bnode ?p ?o .
+        ?io ?ip ?bnode .
+    }
+}
+INSERT {
+    GRAPH ?g {
+        ?iri ?p ?o .
+        ?io ?ip ?iri .
+    }
+}
+WHERE {
+  {
+    SELECT ?g ?bnode (uuid() AS ?iri)
+    WHERE {
+      {
+        SELECT DISTINCT ?bnode ?g
+        WHERE {
+          GRAPH ?g {
+            ?bnode ?p [] .
+            FILTER isBlank(?bnode)
+          }
+        }
+        LIMIT 500
+      }
+    }
+  }
+    GRAPH ?g {
+        ?bnode ?p ?o .
+        OPTIONAL { ?io ?ip ?bnode . }
+    }
+}
