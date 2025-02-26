@@ -1,6 +1,6 @@
 services:
   identifier:
-    image: semtech/mu-identifier:feature-arm64-build
+    image: benfidlers/mu-identifier:1.10.3-arm64
     environment:
       SESSION_COOKIE_SECURE: "on"
     links:
