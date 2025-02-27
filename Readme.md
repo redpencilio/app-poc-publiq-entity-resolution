@@ -116,12 +116,15 @@ Also, make sure to remove the `data/db/.data_loaded` folder, so the new data fil
 Once the new data is loaded, instructions for a new mapping round will be similar to those above, but including a `from` date that will serve as a filter to distinguish the new data from the existing.
 
 
-Run automated Address mapping
+#### Run automated Address mapping
+
+The optional `from`-parameter determines which addresses will be considered for mapping based on their (or rather their Location's) `dct:modified` date. All addresses with a modification date more recent than `from` will be used to create new mappings for. This is mainly useful for incremental runs. Even when another full DB-dump is loaded, this parameter makes it possible to focus only on the recently modified data within. 
 ```
 curl http://localhost:8888/map-addresses?from=2025-02-05T00:00:00
 ```
 
-Run automated Location mapping
+#### Run automated Location mapping
+
 ```
 curl http://localhost:8888/map-locations-by-address?from=2025-02-05T00:00:00
 ```
