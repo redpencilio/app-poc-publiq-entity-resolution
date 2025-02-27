@@ -9,7 +9,8 @@ services:
       - "logging=true"
     restart: always
   dispatcher:
-    image: semtech/mu-dispatcher:feature-arm64-build
+    image: semtech/mu-dispatcher:2.1.0-beta.2
+    platform: linux/amd64
     links:
       - resource:resource
     volumes:
@@ -36,7 +37,8 @@ services:
       - "logging=true"
     restart: always
   cache:
-    image: semtech/mu-cache:feature-arm64-build
+    image: semtech/mu-cache:2.0.2
+    platform: linux/amd64
     links:
       - resource:backend
     labels:
